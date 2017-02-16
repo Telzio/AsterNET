@@ -1,3 +1,4 @@
+using System;
 using AsterNET.FastAGI.Command;
 using AsterNET.IO;
 
@@ -55,6 +56,10 @@ namespace AsterNET.FastAGI
                 throw new AGIHangupException();
             if ((status == 0) && agiReply.FirstLine == "HANGUP" && _SCHANGUP_CAUSES_EXCEPTION)
                 throw new AGIHangupException();
+
+            if (agiReply.FirstLine == "HANGUP")
+                agiReply = agiReader.ReadReply();
+
             return agiReply;
         }
     }
