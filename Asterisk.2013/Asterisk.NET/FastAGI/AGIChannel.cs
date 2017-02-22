@@ -14,7 +14,7 @@ namespace AsterNET.FastAGI
         private readonly AGIReader agiReader;
         private readonly AGIWriter agiWriter;
         private AGIReply agiReply;
-
+        public bool WasHungup { get; set; }
 
         public AGIChannel(SocketConnection socket, bool SC511_CAUSES_EXCEPTION, bool SCHANGUP_CAUSES_EXCEPTION)
         {
@@ -58,8 +58,11 @@ namespace AsterNET.FastAGI
                 throw new AGIHangupException();
 
             if (agiReply.FirstLine == "HANGUP")
+            {
+                WasHungup = true;
                 agiReply = agiReader.ReadReply();
-
+            }
+            
             return agiReply;
         }
     }

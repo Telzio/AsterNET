@@ -444,6 +444,7 @@ namespace AsterNET.FastAGI
 			channel.SendCommand(new Command.GetVariableCommand(name));
 			if (channel.LastReply.ResultCode != 1)
 				return null;
+
 			return channel.LastReply.Extra;
 		}
 		#endregion
