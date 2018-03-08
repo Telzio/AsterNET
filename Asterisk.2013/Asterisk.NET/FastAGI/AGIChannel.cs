@@ -57,6 +57,13 @@ namespace AsterNET.FastAGI
             if ((status == 0) && agiReply.FirstLine == "HANGUP" && _SCHANGUP_CAUSES_EXCEPTION)
                 throw new AGIHangupException();
 
+            if (status == (int) AGIReplyStatuses.SC_DEAD_CHANNEL)
+                WasHungup = true;
+
+            if (status == 0 && agiReply.FirstLine == "HANGUP")
+                WasHungup = true;
+
+
             if (agiReply.FirstLine == "HANGUP")
             {
                 WasHungup = true;
