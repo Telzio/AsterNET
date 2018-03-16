@@ -100,6 +100,7 @@ namespace AsterNET.Manager
     public delegate void DialBeginEventHandler(object sender, Event.DialBeginEvent e);
     public delegate void DialEndEventHandler(object sender, Event.DialEndEvent e);
     public delegate void NewAccountCodeEventHandler(object sender, Event.NewAccountCodeEvent e);
+    public delegate void MonitorStartEventHandler(object sender, Event.MonitorStartEvent e);
     public delegate void MonitorStopEventHandler(object sender, Event.MonitorStopEvent e);
 
     public delegate void AsyncAGIEndEventHandler(object sender, AsyncAGIEndEvent e);
@@ -538,6 +539,11 @@ namespace AsterNET.Manager
         /// </summary>
 	    public event NewAccountCodeEventHandler NewAccountCode;
 
+	    /// <summary>
+	    /// Dispatched when a monitor starts on a channel
+	    /// </summary>
+	    public event MonitorStartEventHandler MonitorStart;
+
         /// <summary>
         /// Dispatched when a monitor stops on a channel
         /// </summary>
@@ -671,13 +677,14 @@ namespace AsterNET.Manager
             Helper.RegisterEventHandler(registeredEventHandlers, 94, typeof(DialEndEvent));
 
             Helper.RegisterEventHandler(registeredEventHandlers, 95, typeof(NewAccountCodeEvent));
-            Helper.RegisterEventHandler(registeredEventHandlers, 96, typeof(MonitorStopEvent));
-            Helper.RegisterEventHandler(registeredEventHandlers, 97, typeof(AsyncAGIEndEvent));
-            Helper.RegisterEventHandler(registeredEventHandlers, 98, typeof(AsyncAGIExecEvent));
-            Helper.RegisterEventHandler(registeredEventHandlers, 99, typeof(AsyncAGIStartEvent));
+		    Helper.RegisterEventHandler(registeredEventHandlers, 96, typeof(MonitorStartEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 97, typeof(MonitorStopEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 98, typeof(AsyncAGIEndEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 99, typeof(AsyncAGIExecEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 100, typeof(AsyncAGIStartEvent));
 
-            Helper.RegisterEventHandler(registeredEventHandlers, 100, typeof(CoreShowChannelEvent));
-            Helper.RegisterEventHandler(registeredEventHandlers, 101, typeof(CoreShowChannelsCompleteEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 101, typeof(CoreShowChannelEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 102, typeof(CoreShowChannelsCompleteEvent));
             Helper.RegisterEventHandler(registeredEventHandlers, 120, typeof(DTMFBeginEvent));
             Helper.RegisterEventHandler(registeredEventHandlers, 121, typeof(DTMFEndEvent));
 
@@ -1347,37 +1354,43 @@ namespace AsterNET.Manager
 				            NewAccountCode(this, (NewAccountCodeEvent) e);
 				        }
 				        break;
-                    case 96:
+				    case 96:
+				        if (MonitorStart != null)
+				        {
+				            MonitorStart(this, (MonitorStartEvent)e);
+				        }
+				        break;
+                    case 97:
                         if (MonitorStop != null)
                         {
                             MonitorStop(this, (MonitorStopEvent)e);
                         }
                         break;
-                    case 97:
+                    case 98:
                         if (AsyncAGIEnd != null)
                         {
                             AsyncAGIEnd(this, (AsyncAGIEndEvent)e);
                         }
                         break;
-                    case 98:
+                    case 99:
                         if (AsyncAGIExec != null)
                         {
                             AsyncAGIExec(this, (AsyncAGIExecEvent)e);
                         }
                         break;
-                    case 99:
+                    case 100:
                         if (AsyncAGIStart != null)
                         {
                             AsyncAGIStart(this, (AsyncAGIStartEvent)e);
                         }
                         break;
-                    case 100:
+                    case 101:
                         if (CoreShowChannel != null)
                         {
                             CoreShowChannel(this, (CoreShowChannelEvent)e);
                         }
                         break;
-                    case 101:
+                    case 102:
                         if (CoreShowChannelsComplete != null)
                         {
                             CoreShowChannelsComplete(this, (CoreShowChannelsCompleteEvent)e);
