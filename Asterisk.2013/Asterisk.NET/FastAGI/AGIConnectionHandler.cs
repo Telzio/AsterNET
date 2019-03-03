@@ -75,9 +75,17 @@ namespace AsterNET.FastAGI
                     {
                         script.Service(request, channel);
                     }
+                    catch (AGIHangupException)
+                    {
+                        throw;
+                    }
+                    catch (IOException)
+                    {
+                        throw;
+                    }
                     catch (Exception e)
                     {
-                        throw new AGIScriptException(e, request, channel);
+                        throw new AGIScriptExecutionException(e, request, channel);
                     }
 #if LOGGER
                     logger.Info("End AGIScript " + script.GetType().FullName + " on " + Thread.CurrentThread.Name);
