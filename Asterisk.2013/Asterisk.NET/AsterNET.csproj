@@ -120,6 +120,7 @@
     <Compile Include="FastAGI\Command\TDDModeCommand.cs" />
     <Compile Include="FastAGI\Command\VerboseCommand.cs" />
     <Compile Include="FastAGI\Command\WaitForDigitCommand.cs" />
+    <Compile Include="FastAGI\Exceptions\AGIScriptException.cs" />
     <Compile Include="FastAGI\Exceptions\InvalidCommandSyntaxException.cs" />
     <Compile Include="FastAGI\Exceptions\InvalidOrUnknownCommandException.cs" />
     <Compile Include="FastAGI\IMappingStrategy.cs" />

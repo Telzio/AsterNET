@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using AsterNET.FastAGI.Command;
+using AsterNET.FastAGI.Exceptions;
 using AsterNET.IO;
 
 namespace AsterNET.FastAGI
@@ -70,7 +71,14 @@ namespace AsterNET.FastAGI
 #if LOGGER
                     logger.Info("Begin AGIScript " + script.GetType().FullName + " on " + Thread.CurrentThread.Name);
 #endif
-                    script.Service(request, channel);
+                    try
+                    {
+                        script.Service(request, channel);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new AGIScriptException(e, request, channel);
+                    }
 #if LOGGER
                     logger.Info("End AGIScript " + script.GetType().FullName + " on " + Thread.CurrentThread.Name);
 #endif
