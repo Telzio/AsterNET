@@ -6,81 +6,69 @@ namespace AsterNET.Manager.Event
 {
 	public class RTCPReceivedEvent : ManagerEvent
 	{
-		private string from;
-		private string pt;
-		private int receptionReports;
-		private long senderSSRC;
-		private long fractionLost;
-		private int packetsLost;
-		private long highestSequence;
-		private int sequenceNumberCycles;
-		private long iaJitter;
-		private string lastSR;
-		private string dlsr;
-		private string rtt;
+        public int ChannelState { get; set; }
+        public string ChannelStateDesc { get; set; }
+        public string CallerIDNum { get; set; }
+        public string CallerIDName { get; set; }
+        public string ConnectedLineNum { get; set; }
+        public string ConnectedLineName { get; set; }
+        public string Language { get; set; }
+        public string AccountCode { get; set; }
+        public string Context { get; set; }
+        public string Exten { get; set; }
+        public string Priority { get; set; }
+        public string Linkedid { get; set; }
 
-		public string From
-		{
-			get { return this.from; }
-			set { this.from = value; }
-		}
+        /// <summary>
+        /// The SSRC identifier for the remote system
+        /// </summary>
+        public string SSRC { get; set; }
 
-		public int SequenceNumberCycles
-		{
-			get { return this.sequenceNumberCycles; }
-			set { this.sequenceNumberCycles = value; }
-		}
-		public string RTT
-		{
-			get { return this.rtt; }
-			set { this.rtt = value; }
-		}
+        /// <summary>
+        /// The type of packet for this RTCP report. 200(SR) 201(RR)
+        /// </summary>
+        public string PT { get; set; }
 
-		public long IAJitter
-		{
-			get { return this.iaJitter; }
-			set { this.iaJitter = value; }
-		}
-		public string PT
-		{
-			get { return this.pt; }
-			set { this.pt = value; }
-		}
-		public int ReceptionReports
-		{
-			get { return this.receptionReports; }
-			set { this.receptionReports = value; }
-		}
-		public string LastSR
-		{
-			get { return this.lastSR; }
-			set { this.lastSR = value; }
-		}
-		public string DLSR
-		{
-			get { return this.dlsr; }
-			set { this.dlsr = value; }
-		}
-		public long FractionLost
-		{
-			get { return this.fractionLost; }
-			set { this.fractionLost = value; }
-		}
-		public long SenderSSRC
-		{
-			get { return this.senderSSRC; }
-			set { this.senderSSRC = value; }
-		}
-		public long HighestSequence
-		{
-			get { return this.highestSequence; }
-			set { this.highestSequence = value; }
-		}
-		public int PacketsLost
-		{
-			get { return this.packetsLost; }
-			set { this.packetsLost = value; }
-		}
+        /// <summary>
+        /// The address the report was received from.
+        /// </summary>
+		public string From { get; set; }
+
+        /// <summary>
+        /// The address the report was sent to.
+        /// </summary>
+        public string To { get; set; }
+
+        /// <summary>
+        /// Calculated Round-Trip Time in seconds
+        /// </summary>
+        public decimal RTT { get; set; }
+
+        /// <summary>
+        /// The number of reports that were received.
+        /// The report count determines the number of ReportX headers in the message. The X for each set of report headers will range from 0 to ReportCount - 1.
+        /// </summary>
+        public int ReportCount { get; set; }
+
+        /// <summary>
+        /// The time the sender generated the report. Only valid when PT is 200(SR).
+        /// </summary>
+        public decimal SentNTP { get; set; }
+
+        /// <summary>
+        /// The sender's last RTP timestamp. Only valid when PT is 200(SR).
+        /// </summary>
+        public long SentRTP { get; set; }
+
+        /// <summary>
+        /// The number of packets the sender has sent. Only valid when PT is 200(SR).
+        /// </summary>
+        public long SentPackets { get; set; }
+
+        /// <summary>
+        /// The number of bytes the sender has sent. Only valid when PT is 200(SR).
+        /// </summary>
+        public long SentOctets { get; set; }
 
 		#region Constructor - RTCPReceivedEvent(ManagerConnection source)
 		public RTCPReceivedEvent(ManagerConnection source)

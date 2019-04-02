@@ -563,6 +563,9 @@ namespace AsterNET.Manager
 
 	    public event DTMFBeginEventHandler DTMFBegin;
         public event DTMFEndEventHandler DTMFEnd;
+
+        public event EventHandler<RTCPReceivedEvent> RTCPReceived;
+        public event EventHandler<RTCPSentEvent> RTCPSent;
 		#endregion
 
 		#region Constructor - ManagerConnection()
@@ -687,6 +690,8 @@ namespace AsterNET.Manager
             Helper.RegisterEventHandler(registeredEventHandlers, 102, typeof(CoreShowChannelsCompleteEvent));
             Helper.RegisterEventHandler(registeredEventHandlers, 120, typeof(DTMFBeginEvent));
             Helper.RegisterEventHandler(registeredEventHandlers, 121, typeof(DTMFEndEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 131, typeof(RTCPReceivedEvent));
+            Helper.RegisterEventHandler(registeredEventHandlers, 132, typeof(RTCPSentEvent));
 
 
 			#endregion
@@ -1406,6 +1411,18 @@ namespace AsterNET.Manager
                         if (DTMFEnd != null)
                         {
                             DTMFEnd(this, (DTMFEndEvent)e);
+                        }
+                        break;
+                    case 131:
+                        if (RTCPReceived != null)
+                        {
+                            RTCPReceived(this, (RTCPReceivedEvent) e);
+                        }
+                        break;
+                    case 132:
+                        if (RTCPSent != null)
+                        {
+                            RTCPSent(this, (RTCPSentEvent) e);
                         }
                         break;
                     default:
