@@ -60,6 +60,8 @@ namespace AsterNET.FastAGI
 
         private Encoding socketEncoding = Encoding.ASCII;
 
+        public Action<SocketConnection> SocketAcceptedAction { get; set; }
+
         #endregion
 
         #region PoolSize
@@ -255,28 +257,14 @@ namespace AsterNET.FastAGI
 #if LOGGER
                     logger.Info("Received connection.");
 #endif
-                    //Set keepalive
-                    // Get the size of the uint to use to back the byte array
-                    int size = Marshal.SizeOf((uint)0);
 
-                    // Create the byte array
-                    byte[] keepAlive = new byte[size * 3];
+                    //Execute socket accepted action.
+                    if (SocketAcceptedAction != null)
+                    {
+                        SocketAcceptedAction(socket);
+                    }
 
-                    // Pack the byte array:
-                    // Turn keepalive on
-                    Buffer.BlockCopy(BitConverter.GetBytes((uint)1), 0, keepAlive, 0, size);
-
-                    // Set amount of time without activity before sending a keepalive to 5 seconds
-                    Buffer.BlockCopy(BitConverter.GetBytes((uint)300000), 0, keepAlive, size, size);
-
-                    // Set keepalive interval to 5 seconds
-                    Buffer.BlockCopy(BitConverter.GetBytes((uint)300000), 0, keepAlive, size * 2, size);
-
-                    // Set the keep-alive settings on the underlying Socket
-                    socket.TcpClient.Client.IOControl(IOControlCode.KeepAliveValues, keepAlive, null);
-
-                    var connectionHandler = new AGIConnectionHandler(socket, mappingStrategy, SC511_CAUSES_EXCEPTION,
-                        SCHANGUP_CAUSES_EXCEPTION);
+                    var connectionHandler = new AGIConnectionHandler(socket, mappingStrategy, SC511_CAUSES_EXCEPTION, SCHANGUP_CAUSES_EXCEPTION);
                     pool.AddJob(connectionHandler);
                 }
             }
